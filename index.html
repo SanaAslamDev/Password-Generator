@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KeyVault - Password Manager</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================== -->
+  <!-- HEADER -->
+  <!-- ============================== -->
+  <div class="app-header">
+    <div class="logo-row">
+      <div class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/><rect x="9.5" y="11" width="5" height="4" rx="1"/><path d="M10.5 11V9.5a1.5 1.5 0 0 1 3 0V11"/></svg></div>
+      <div class="logo-title">Key<span>Vault</span></div>
+    </div>
+    <div class="app-subtitle">Your passwords, locked and loaded.</div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- TABS -->
+  <!-- ============================== -->
+  <div class="tab-bar">
+    <button class="tab-button active" onclick="switchTab('generate', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m15 4 1.5 1.5L18 4l-1.5-1.5L15 4Z"/><path d="M4 20 15 9l1 1L5 21l-1-1Z"/><path d="M19 8v3M21 9.5h-4M5 4v2M6 5H4"/></svg>
+      Generate
+    </button>
+    <button class="tab-button" onclick="switchTab('save', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 4h11l3 3v13H5V4Z"/><path d="M8 4v5h8V4M8 14h8v6H8v-6Z"/></svg>
+      Save
+    </button>
+    <button class="tab-button" onclick="switchTab('vault', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 9v.01M9 12h.01M15 12h.01M12 15v.01"/></svg>
+      Vault
+      <span class="count-badge" id="vaultCount">0</span>
+    </button>
+  </div>
+
+  <!-- ============================== -->
+  <!-- TAB 1: GENERATE PASSWORD -->
+  <!-- ============================== -->
+  <div class="tab-page active" id="page-generate">
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m15 4 1.5 1.5L18 4l-1.5-1.5L15 4Z"/><path d="M4 20 15 9l1 1L5 21l-1-1Z"/><path d="M19 8v3M21 9.5h-4M5 4v2M6 5H4"/></svg> Password Generator</div>
+
+      <!-- length slider -->
+      <div class="length-row">
+        <span class="length-label">Length</span>
+        <input type="range" id="lengthSlider" min="6" max="32" value="16" oninput="onLengthChange()"/>
+        <div class="length-number" id="lengthNumber">16</div>
+      </div>
+
+      <!-- character options -->
+      <div class="option-list">
+        <label class="option-pill active" id="optionUppercase">
+          <input type="checkbox" checked onchange="toggleOption('optionUppercase', this)"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M6 19 11 5h2l5 14M7.5 14h9"/></svg> Uppercase
+        </label>
+        <label class="option-pill active" id="optionLowercase">
+          <input type="checkbox" checked onchange="toggleOption('optionLowercase', this)"/>
+          <svg viewBox="0 0 24 24" width="15" height="15"><text x="12" y="18" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor" font-family="Arial, sans-serif">a</text></svg> Lowercase
+        </label>
+        <label class="option-pill active" id="optionNumbers">
+          <input type="checkbox" checked onchange="toggleOption('optionNumbers', this)"/>
+          <svg viewBox="0 0 24 24" width="15" height="15"><text x="12" y="17" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" font-family="Arial, sans-serif">123</text></svg> Numbers
+        </label>
+        <label class="option-pill" id="optionSymbols">
+          <input type="checkbox" onchange="toggleOption('optionSymbols', this)"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-4 7.5"/></svg> Symbols
+        </label>
+      </div>
+
+      <!-- generated password output -->
+      <div class="password-output-row">
+        <input type="text" id="generatedPasswordInput" readonly placeholder="Click Generate"/>
+        <button class="square-icon-button" id="copyButton" onclick="copyGeneratedPassword()" title="Copy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+        <button class="square-icon-button" onclick="generatePassword()" title="Regenerate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 11A8 8 0 1 0 18.5 16"/><path d="M20 4v7h-7"/></svg>
+        </button>
+      </div>
+
+      <!-- strength meter -->
+      <div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>
+      <div class="strength-info-row">
+        <div class="strength-dots">
+          <div class="strength-dot" id="dot0"></div>
+          <div class="strength-dot" id="dot1"></div>
+          <div class="strength-dot" id="dot2"></div>
+          <div class="strength-dot" id="dot3"></div>
+          <div class="strength-dot" id="dot4"></div>
+        </div>
+        <span class="strength-text" id="strengthText">-</span>
+      </div>
+
+      <div class="button-row">
+        <button class="btn btn-purple" onclick="generatePassword()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m15 4 1.5 1.5L18 4l-1.5-1.5L15 4Z"/><path d="M4 20 15 9l1 1L5 21l-1-1Z"/><path d="M19 8v3M21 9.5h-4M5 4v2M6 5H4"/></svg> Generate
+        </button>
+        <button class="btn btn-gray" onclick="sendGeneratedToSaveTab()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M17 7 21 11l-4 4M21 11H9M7 17l-4-4 4-4M3 13h12"/></svg> Use to Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- TAB 2: SAVE PASSWORD -->
+  <!-- ============================== -->
+  <div class="tab-page" id="page-save">
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M5 4h11l3 3v13H5V4Z"/><path d="M8 4v5h8V4M8 14h8v6H8v-6Z"/></svg> Save Password</div>
+
+      <div class="field">
+        <div class="field-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg> Website / App</div>
+        <input type="text" id="siteNameInput" placeholder="e.g. Google, Instagram"/>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg> Username / Email</div>
+        <input type="text" id="usernameInput" placeholder="e.g. user@email.com"/>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="8" cy="15" r="4"/><path d="M11 12 20 3M16 7l3 3M19 4l3 3"/></svg> Password</div>
+        <div class="password-field-wrap">
+          <input type="password" id="passwordInput" placeholder="Enter or paste password"/>
+          <button class="eye-button" onclick="togglePasswordVisibility()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" id="eyeIcon"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="btn btn-purple" onclick="savePassword()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 4h11l3 3v13H5V4Z"/><path d="M8 4v5h8V4M8 14h8v6H8v-6Z"/></svg> Save Password
+        </button>
+        <button class="btn btn-gray" onclick="pasteGeneratedPassword()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg> Paste Generated
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- TAB 3: VAULT (saved list) -->
+  <!-- ============================== -->
+  <div class="tab-page" id="page-vault">
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 9v.01M9 12h.01M15 12h.01M12 15v.01"/></svg> Saved Passwords</div>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+  </div>
+
+  <!-- toast popup -->
+  <div id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" id="toastIcon"><path d="M5 13l4 4L19 7"/></svg><span id="toastMessage">Copied!</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>
