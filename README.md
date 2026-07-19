@@ -1,189 +1,227 @@
 <div align="center">
 
-<br/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF7A00,100:2F8CA5&height=180&section=header&text=KeyVault&fontSize=46&fontColor=0f0f13&fontAlignY=38&desc=Generate.%20Save.%20Protect.&descAlignY=58&descSize=16&descColor=1a1a2e" width="100%" />
 
-# KeyVault
+<br>
 
-### A clean, dark-themed password manager built with HTML, CSS &amp; JavaScript
+[![View Live Demo](https://img.shields.io/badge/VIEW_LIVE_DEMO-FF7A00?style=for-the-badge&logo=netlify&logoColor=0f0f13)](https://passwordgenerator0112.netlify.app)
 
-<br/>
+<br><br>
 
-[![Live Demo](https://img.shields.io/badge/demo-live-6c63ff?style=for-the-badge)](https://password-generator-save.netlify.app/)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
-
-[![License: MIT](https://img.shields.io/badge/license-MIT-444?style=flat-square)](#license)
-![No dependencies](https://img.shields.io/badge/dependencies-none-2E8B57?style=flat-square)
-![Status](https://img.shields.io/badge/status-active-2E8B57?style=flat-square)
-
-<br/>
-
-**[View Live Demo](https://password-generator-save.netlify.app/)** &nbsp;·&nbsp; **[Report a Bug](https://github.com/SanaAslamDev/Password-Generator/issues)** &nbsp;·&nbsp; **[Request a Feature](https://github.com/SanaAslamDev/Password-Generator/issues)**
-
-<br/>
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![No Build Tools](https://img.shields.io/badge/Build_Tools-None-2EA043?style=flat-square)
+![No Frameworks](https://img.shields.io/badge/Frameworks-None-2EA043?style=flat-square)
 
 </div>
 
-<p align="center">
-Generate strong passwords, watch their strength scored in real time, and save them to a personal vault — built with clean, separated HTML, CSS, and JavaScript files and no external frameworks.
-</p>
+<br>
 
-<br/>
+> A clean, warm-themed password generator and personal vault built with **pure HTML, CSS, and JavaScript**. Cryptographically secure password generation, a live strength meter, and local persistence — no frameworks, no build tools, no backend.
 
-<div align="center">
-<img src="https://img.shields.io/badge/-Generate-181c29?style=flat-square&labelColor=6c63ff" height="26"/>
-&nbsp;→&nbsp;
-<img src="https://img.shields.io/badge/-Save-181c29?style=flat-square&labelColor=6c63ff" height="26"/>
-&nbsp;→&nbsp;
-<img src="https://img.shields.io/badge/-Vault-181c29?style=flat-square&labelColor=6c63ff" height="26"/>
-</div>
+<br>
 
-<br/>
-
----
-
-## Table of contents
-
-- [Features](#features)
-- [Tech stack](#tech-stack)
-- [Getting started](#getting-started)
-- [Project structure](#project-structure)
-- [How it works](#how-it-works)
-- [Security notes](#security-notes)
-- [Author](#author)
-- [License](#license)
-
----
-
-## Features
+## Contents
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td valign="top" width="50%">
 
-**Password generator**
-Adjustable length from 6 to 32 characters via a slider, with four toggleable character sets — uppercase, lowercase, numbers, and symbols. The result types itself onto the screen with a short animation.
-
-**Live strength meter**
-Every password is scored against five criteria and displayed as a color-coded bar with five strength dots, ranging from *Very Weak* to *Excellent*.
-
-**One-click copy**
-Copy any generated or saved password instantly. The button briefly confirms the action before resetting.
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Architecture](#architecture)
 
 </td>
-<td width="50%" valign="top">
+<td valign="top" width="50%">
 
-**Personal vault**
-Save passwords alongside a site name and username. Entries persist in the browser, so they're still there on your next visit.
-
-**Vault management**
-Saved entries appear as cards with an auto-generated initials avatar, masked password dots, and quick copy or delete actions. A live counter on the Vault tab shows how many entries are stored.
-
-**Password visibility toggle**
-Reveal or mask the password you're typing with a single click of the eye icon.
+- [Getting Started](#getting-started)
+- [How It Works](#how-it-works)
+- [Security Notes](#security-notes)
+- [Deployment](#deployment)
+- [Author](#author)
 
 </td>
 </tr>
 </table>
 
----
+<br>
 
-## Tech stack
+## Overview
+
+KeyVault is a single-page, tab-based password toolkit. It moves between three states — Generate, Save, and Vault — entirely with vanilla JavaScript toggling a shared `active` class, with no page reloads and no routing library. Every password is generated using the Web Crypto API rather than `Math.random()`, scored for strength in real time, and can be stored locally for future reference.
+
+<br>
+
+## Features
+
+<table>
+<tr>
+<td width="50%">
+
+**Password Generator**
+- Adjustable length from 6 to 32 characters via slider
+- Four toggleable character sets — uppercase, lowercase, numbers, symbols
+- Cryptographically secure randomness (`crypto.getRandomValues`)
+- Live regenerate on length change (debounced)
+
+</td>
+<td width="50%">
+
+**Strength Meter**
+- Real-time scoring across five criteria
+- Color-coded progress bar with five strength dots
+- Labels ranging from *Very Weak* to *Excellent*
+- Penalizes repeated-character patterns
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Save &amp; Vault**
+- Save a password alongside a site name and username
+- Show/hide toggle on the password field
+- Entries persist in the browser across sessions
+- Live entry counter on the Vault tab
+
+</td>
+<td width="50%">
+
+**Vault Management**
+- Auto-generated initials avatar per entry
+- Masked password display with one-click copy
+- Confirm-before-delete on every entry
+- Empty-state illustration when the vault is empty
+
+</td>
+</tr>
+</table>
+
+<br>
+
+## Tech Stack
 
 <div align="center">
 
-| Layer | Technology | Notes |
-|:---|:---|:---|
-| Structure | HTML5 | Semantic markup in `index.html` |
-| Styling | CSS3 | Custom properties, flexbox, keyframe animations in `style.css` |
-| Logic | Vanilla JavaScript (ES6) | No frameworks, no build step, in `script.js` |
-| Storage | `localStorage` | Client-side persistence, no server |
-| Icons | Inline SVG | No external icon font or CDN dependency |
+<img src="https://skillicons.dev/icons?i=html,css,js" />
 
 </div>
 
-<p align="center"><sub>No npm packages. No build tools. No backend. Plain HTML, CSS, and JS.</sub></p>
+<br>
 
----
+<div align="center">
 
-## Getting started
+| Layer | Technology |
+|:---:|:---:|
+| Structure | HTML5 |
+| Styling | CSS3 — custom properties, flexbox, keyframe animations |
+| Fonts | Google Fonts — Lilita One, Nunito |
+| Logic | Vanilla JavaScript (ES6) |
+| Randomness | Web Crypto API (`crypto.getRandomValues`) |
+| Persistence | `localStorage` — client-side only, no server |
+| Icons | Inline SVG — no external icon font or CDN dependency |
 
-**Option 1 — Try it instantly**
+</div>
 
-Open the live demo: [password-generator-save.netlify.app](https://password-generator-save.netlify.app/)
+<br>
 
-**Option 2 — Run it locally**
+## Project Structure
+
+```
+KeyVault/
+├── index.html      Page markup — header, tabs, and the three panels
+├── style.css       All visual styling, grouped by component
+├── script.js       App logic, organized by feature
+└── README.md       This file
+```
+
+<div align="center">
+
+| File | Responsibility |
+|:---:|:---|
+| `index.html` | Semantic markup for the header, tab navigation, and Generate / Save / Vault panels |
+| `style.css` | Theming, layout, responsiveness, and all animations |
+| `script.js` | Tab switching, password generation, strength scoring, storage, and rendering |
+
+</div>
+
+<br>
+
+## Architecture
+
+```
+Generate Tab ──▶ Save Tab ──▶ Vault Tab
+     │                            ▲
+     │                            │
+     └────── Use to Save ─────────┘
+```
+
+The app is a single-page state machine. At any moment exactly one tab panel is visible — JavaScript controls this by adding or removing one shared `active` class, never by navigating to a different page. Vault data is held in a single in-memory array and synced to `localStorage` on every change.
+
+<br>
+
+## Getting Started
+
+**1. Clone the repository**
 
 ```bash
 git clone https://github.com/SanaAslamDev/Password-Generator.git
 cd Password-Generator
 ```
 
-Then open `index.html` directly in any modern browser. No server, no build command, and no dependencies to install.
+**2. Open in your browser**
 
----
+No build step is required — simply open `index.html` directly, or serve it locally:
 
-## Project structure
-
-```
-Password-Generator/
-├── index.html      page markup — header, tabs, and the three panels
-├── style.css        all visual styling, grouped by component
-├── script.js         app logic, broken into numbered, commented steps
-└── README.md         this file
+```bash
+python3 -m http.server 8000
 ```
 
-`index.html` links the other two files in the usual way:
+Then visit `http://localhost:8000`.
 
-```html
-<link rel="stylesheet" href="style.css">
-...
-<script src="script.js"></script>
-```
+**Or, try it instantly:** [passwordgenerator0112.netlify.app](https://passwordgenerator0112.netlify.app)
 
-**`style.css`** is organized into clearly commented sections — reset rules, color variables, header/logo, tab bar, cards, form fields, the length slider, option pills, the strength meter, buttons, the saved-password list, and the toast notification.
+<br>
 
-**`script.js`** is broken into numbered, commented steps covering tab switching, password generation, strength scoring, clipboard actions, saving and deleting vault entries, and rendering the saved list. Data is kept in a single array in memory and synced to `localStorage` on every change.
+## How It Works
 
----
-
-## How it works
-
-| Step | Tab | What happens |
+| Step | Tab | What Happens |
 |:---:|:---|:---|
-| 1 | **Generate** | Builds a character pool from the selected checkboxes and assembles a random password with `Math.random()`, then scores it for strength. |
-| 2 | **Save** | Bundles the password with a site name and username into an object, which is added to an array and persisted as JSON in `localStorage`. |
+| 1 | **Generate** | Builds a character pool from the selected checkboxes and assembles a random password using the Web Crypto API for cryptographically secure randomness, then scores it for strength. |
+| 2 | **Save** | Bundles the password with a site name and username into an object, added to an array and persisted as JSON in `localStorage`. |
 | 3 | **Vault** | Reads that array back and renders every saved entry as a card, so the UI always reflects current storage. |
 
-A full line-by-line explanation of the code is available in the accompanying project report, `KeyVault-Project-Report.pdf`.
+<br>
 
----
-
-## Security notes
+## Security Notes
 
 Passwords are stored only in the browser's `localStorage` — there is no server, account system, or sync across devices. This project is intended as a learning and personal-use tool rather than a production-grade credential manager. For anything sensitive, a dedicated, audited password manager is recommended.
 
----
+<br>
 
-## Author
+## Deployment
+
+This project is a static site and deploys to Netlify with no configuration:
+
+1. Drag the project folder onto [app.netlify.com/drop](https://app.netlify.com/drop), **or**
+2. Connect the GitHub repository through **Add new site → Import an existing project**, with no build command and the publish directory set to the project root.
+
+<br>
 
 <div align="center">
+
+## Author
 
 **Sana Aslam**
 
 [![GitHub](https://img.shields.io/badge/GitHub-SanaAslamDev-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/SanaAslamDev)
+[![Live Project](https://img.shields.io/badge/Live_Project-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://passwordgenerator0112.netlify.app)
 
-</div>
+<br>
 
----
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2F8CA5,100:FF7A00&height=100&section=footer" width="100%" />
 
-## License
-
-This project is open source and available under the MIT License — free to use, modify, and learn from.
-
-<br/>
-
-<div align="center">
-<sub>If you found this project useful, consider giving it a star.</sub>
 </div>
